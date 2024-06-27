@@ -25,6 +25,10 @@ func (vc *VectorClock) IncrementLocalMonotonicClock() {
 	}
 }
 
+// ponder: at it's core isn't a vector clock also a LWW register?
+// we're comparing two maps of arbitrary types but the core operation
+// remains the same which is the Merge() call where we check the timestamps
+// i.e. baseClock value and keep the the clock with a higher value.
 func (vc *VectorClock) IntegrateClocks(integrationClock map[string]BaseClock) {
 	for nodeID, remoteReplicaClock := range integrationClock {
 		if nodeID == vc.localNodeID {
